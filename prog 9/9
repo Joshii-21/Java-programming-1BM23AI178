@@ -1,32 +1,37 @@
-package BM23AI178;
-import java.util.ArrayList;
+package S1BM23AI176;
 
+// Interface defining stack operations
 interface StackOperations {
     void push(int item);
     int pop();
     void display();
+    boolean isEmpty();
+    boolean isFull();
 }
 
-
+// Fixed Length Stack Implementation
 class FixedLengthStack implements StackOperations {
     private int[] stack;
     private int top;
+    private int capacity;
 
     public FixedLengthStack(int size) {
         stack = new int[size];
+        capacity = size;
         top = -1;
     }
 
     public void push(int item) {
-        if (top == stack.length - 1) {
+        if (isFull()) {
             System.out.println("Stack Overflow (Fixed)");
+            return;
         } else {
             stack[++top] = item;
         }
     }
 
     public int pop() {
-        if (top == -1) {
+        if (isEmpty()) {
             System.out.println("Stack Underflow (Fixed)");
             return -1;
         } else {
@@ -35,7 +40,7 @@ class FixedLengthStack implements StackOperations {
     }
 
     public void display() {
-        if (top == -1) {
+        if (isEmpty()) {
             System.out.println("Stack is empty (Fixed)");
             return;
         }
@@ -45,78 +50,139 @@ class FixedLengthStack implements StackOperations {
         }
         System.out.println();
     }
+
+    public boolean isEmpty() {
+        return top == -1;
+    }
+
+    public boolean isFull() {
+        return top == capacity - 1;
+    }
 }
 
-
-
+// Dynamic Length Stack Implementation
 class DynamicLengthStack implements StackOperations {
-    private ArrayList<Integer> stack;
+    private int[] stack;
+    private int capacity;
+    private int top;
 
-    public DynamicLengthStack() {
-        stack = new ArrayList<>();
+    public DynamicLengthStack(int size) {
+        stack = new int[size];
+        capacity = size;
+        top = -1;
     }
 
     public void push(int item) {
-        stack.add(item);
+        if (isFull()) {
+            resizeStack();
+        }
+        stack[++top] = item;
+        System.out.println("Item pushed: " + item);
     }
 
     public int pop() {
-        if (stack.isEmpty()) {
+        if (isEmpty()) {
             System.out.println("Stack Underflow (Dynamic)");
             return -1;
         } else {
-            return stack.remove(stack.size() - 1);
+            return stack[top--];
         }
     }
 
     public void display() {
-        if (stack.isEmpty()) {
+        if (isEmpty()) {
             System.out.println("Stack is empty (Dynamic)");
             return;
         }
         System.out.print("Dynamic Stack: ");
-        for (int item : stack) {
-            System.out.print(item + " ");
+        for (int i = 0; i <= top; i++) {
+            System.out.print(stack[i] + " ");
         }
         System.out.println();
     }
+
+    public boolean isEmpty() {
+        return top == -1;
+    }
+
+    public boolean isFull() {
+        return top == capacity - 1;
+    }
+
+    private void resizeStack() {
+        int[] newStack = new int[capacity * 2];
+        System.arraycopy(stack, 0, newStack, 0, capacity);
+        capacity *= 2;
+        stack = newStack;
+        System.out.println("Stack size resized to: " + capacity);
+    }
 }
 
-
-public class StackDemo {
+// Main class to test the stacks
+public class Interface {
     public static void main(String[] args) {
-        StackOperations stack;
+        StackOperations fixedStack = new FixedLengthStack(5);
+        StackOperations dynamicStack = new DynamicLengthStack(5);
 
+        System.out.println("Using Fixed Length Stack:");
+        testStack(fixedStack);
 
-        stack = new FixedLengthStack(3);
-        stack.push(10);
-        stack.push(20);
-        stack.push(30);
-        stack.push(40);
-        stack.display();
-        stack.pop();
+        System.out.println("\nUsing Dynamic Length Stack:");
+        testStack(dynamicStack);
+    }
+
+    public static void testStack(StackOperations stack) {
+        stack.push(1);
+        stack.push(2);
+        stack.push(3);
+        stack.push(4);
+        stack.push(5);
+        stack.push(6); // Overflow or resize
+
         stack.display();
 
-        System.out.println();
-
-        
-        stack = new DynamicLengthStack();
-        stack.push(100);
-        stack.push(200);
-        stack.push(300);
-        stack.display();
-        stack.pop();
-        stack.display();
+        System.out.println("Popping elements from stack:");
+        while (!stack.isEmpty()) {
+            System.out.println("Popped: " + stack.pop());
+        }
     }
 }
 
 output:
-"C:\Program Files\Java\jdk-18.0.1.1\bin\java.exe"
-Stack Overflow (Fixed)
-Fixed Stack: 10 20 30
-Fixed Stack: 10 20
+"C:\Program Files\Java\jdk-18.0.1.1\bin\java.exe" "-javaagent:C:\Program Files\...
 
-Dynamic Stack: 100 200 300
-Dynamic Stack: 100 200
+Using Fixed-Length Stack:
+Pushing: 1
+Pushing: 2
+Pushing: 3
+Pushing: 4
+Pushing: 5
+Pushing: 6
+Stack Overflow
+Pushing: 7
+Stack Overflow
+Fixed Stack: 1 2 3 4 5
 
-Process finished with exit code 0
+Popping elements:
+Popped: 5
+Popped: 4
+Popped: 3
+Fixed Stack: 1 2
+
+Using Dynamic-Length Stack:
+Pushing: 1
+Pushing: 2
+Pushing: 3
+Pushing: 4
+Pushing: 5
+Pushing: 6
+Stack resized to capacity: 10
+Pushing: 7
+Dynamic Stack: 1 2 3 4 5 6 7
+
+Popping elements:
+Popped: 7
+Popped: 6
+Popped: 5
+Dynamic Stack: 1 2 3 4
+
