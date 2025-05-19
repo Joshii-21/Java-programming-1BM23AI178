@@ -18,7 +18,7 @@ import apack.A;
 
 public class B extends A{
     public void display(){
-        System.out.println("Inside Constructor class B");
+        System.out.println("Inside Constructor class C");
         //System.out.println("default variable in class A"+defaultvar);
         System.out.println("protected variable in class A"+protectedvar);
         //System.out.println("private variable in class A"+privatevar);
