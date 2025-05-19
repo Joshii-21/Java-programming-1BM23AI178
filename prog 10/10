@@ -1,0 +1,69 @@
+package apack;
+
+public class A {
+    int defaultvar =10;
+    protected int protectedvar=20;
+    private int privatevar=30;
+    public int publicvar=40;
+    public A(){
+        System.out.println("inside constructor of class A");
+
+    }
+}
+
+
+package bpack;
+import apack.A;
+
+
+public class B extends A{
+    public void display(){
+        System.out.println("Inside Constructor class B");
+        //System.out.println("default variable in class A"+defaultvar);
+        System.out.println("protected variable in class A"+protectedvar);
+        //System.out.println("private variable in class A"+privatevar);
+        System.out.println("public variable in class A"+publicvar);
+    }
+}
+
+
+package cpack;
+import apack.A;
+
+public class C {
+    A obj= new A();
+    public void display(){
+        System.out.println("Inside Constructor class B");
+        //System.out.println("default variable in class A"+obj.defaultvar);
+        //System.out.println("protected variable in class A"+obj.protectedvar);
+        //System.out.println("private variable in class A"+obj.privatevar);
+        System.out.println("public variable in class A"+obj.publicvar);
+    }
+}
+
+
+
+package com.mycompany.mavenproject2;
+import bpack.B;
+import cpack.C;
+
+public class Mavenproject2 {
+    public static void main(String[] args ){
+        B objB = new B();
+        objB.display();
+        C objC = new C();
+        objC.display();
+    }
+}
+
+output:
+"C:\Program Files\Eclipse Adoptium\jdk-21.0.6.7-hotspot\bin\java.exe" "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3.4\lib\idea_rt.jar=61248" -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 -classpath "C:\Users\admin\IdeaProjects\lab 10\out\production\lab 10" com.mycompany.mavenproject2.MavenProject2
+inside constructor of class A
+Inside Constructor class B
+protected variable in class A20
+public variable in class A40
+inside constructor of class A
+Inside Constructor class B
+public variable in class A40
+
+Process finished with exit code 0
